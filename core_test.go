@@ -3,17 +3,10 @@ package strset
 import (
 	"testing"
 
-	. "gopkg.in/check.v1"
+	"github.com/stretchr/testify/assert"
 )
 
-// Hook up gocheck into the "go test" runner.
-func Test(t *testing.T) { TestingT(t) }
-
-type CoreSuite struct{}
-
-var _ = Suite(&CoreSuite{})
-
-func (s *CoreSuite) TestMake_empty(c *C) {
-	set := Make()
-	c.Assert(set.Len(), Equals, 0)
+func TestSomething(t *testing.T) {
+	s := Make()
+	assert.Equal(t, 0, s.Len())
 }

@@ -12,7 +12,7 @@ func TestMake_empty(t *testing.T) {
 	assert.Equal(t, 0, s.Len())
 }
 
-func TestTime(t *testing.T) {
+func TestMake(t *testing.T) {
 	testCases := []struct {
 		elems []string
 		want int

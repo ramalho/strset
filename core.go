@@ -15,10 +15,20 @@ type Set struct {
 func Make(elems ...string) Set {
 	s := Set{}
 	s.store = make(map[string]struct{})
-	for _, elem := range elems {
-		s.store[elem] = struct{}{}
-	}
+	s.AddAll(elems...)
 	return s
+}
+
+// Add adds element to set.
+func (s Set) Add(elem string) {
+	s.store[elem] = struct{}{}
+}
+
+// AddAll adds elements to set.
+func (s Set) AddAll(elems ...string) {
+	for _, elem := range elems {
+		s.Add(elem)
+	}
 }
 
 // Len reports the number of elements in the set.

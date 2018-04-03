@@ -64,6 +64,21 @@ func (s Set) String() string {
 	return buf.String()
 }
 
+// allIn reports whether all elements of s exist in other.
+func (s Set) allIn(other Set) bool {
+	for elem := range s.store {
+		if _, found := other.store[elem]; !found {
+			return false
+		}
+	}
+	return true
+}
+
+// Equal reports whether set is equal to other
+func (s Set) Equal(other Set) bool {
+	return len(s.store) == len(other.store) && s.allIn(other)
+}
+
 
 
 

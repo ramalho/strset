@@ -15,8 +15,16 @@ func Make(elems ...string) Set {
 	return s
 }
 
+// Len reports the number of elements in the set.
 func (s Set) Len() int {
 	return len(s.store)
 }
+
+// Has reports whether set contains the element.
+func (s Set) Has(elem string) bool {
+	_, found := s.store[elem]
+	return found
+}
+
 
 

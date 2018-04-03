@@ -28,3 +28,23 @@ func TestMake(t *testing.T) {
 		})
 	}
 }
+
+func TestHas(t *testing.T) {
+	testCases := []struct {
+		elems []string
+		needle string
+		want bool
+	}{
+		{[]string{}, "a", false},
+		{[]string{"a"}, "a", true},
+		{[]string{"a", "b"}, "c", false},
+		{[]string{"a", "b"}, "b", true},
+	}
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("%q in %v is %v", tc.elems, tc.needle, tc.want), func(t *testing.T) {
+			s := Make(tc.elems...)
+			got := s.Has(tc.needle)
+			assert.Equal(t, tc.want, got)
+		})
+	}
+}

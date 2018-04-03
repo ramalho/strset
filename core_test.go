@@ -1,10 +1,10 @@
 package strset
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"fmt"
 )
 
 func TestMake_empty(t *testing.T) {
@@ -44,6 +44,24 @@ func TestHas(t *testing.T) {
 		t.Run(fmt.Sprintf("%q in %v is %v", tc.elems, tc.needle, tc.want), func(t *testing.T) {
 			s := Make(tc.elems...)
 			got := s.Has(tc.needle)
+			assert.Equal(t, tc.want, got)
+		})
+	}
+}
+
+func TestString(t *testing.T) {
+	testCases := []struct {
+		elems []string
+		want string
+	}{
+		{[]string{}, `Set{}`},
+		{[]string{"a"}, `Set{a}`},
+		{[]string{"b", "a"}, `Set{a b}`},
+	}
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("%v gets %q", tc.elems, tc.want), func(t *testing.T) {
+			s := Make(tc.elems...)
+			got := fmt.Sprint(s)
 			assert.Equal(t, tc.want, got)
 		})
 	}

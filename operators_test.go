@@ -17,12 +17,13 @@ var (
 	empty     = Make()
 )
 
-func TestIntersection(t *testing.T) {
-	testCases := []struct {
-		set1 Set
-		set2 Set
-		want Set
-	}{
+type TestCase struct {
+	set1 Set
+	set2 Set
+	want Set
+}
+
+var	intersectionTestCases = []TestCase {
 		{empty, empty, empty},
 		{singleton, even, empty},
 		{singleton, odd, singleton},
@@ -34,7 +35,9 @@ func TestIntersection(t *testing.T) {
 		{fibonacci, prime, Make("2", "3", "5")},
 
 	}
-	for _, tc := range testCases {
+
+func TestIntersection(t *testing.T) {
+	for _, tc := range intersectionTestCases {
 		t.Run(fmt.Sprintf("%v.Intersection(%v) is %v", tc.set1, tc.set2, tc.want), func(t *testing.T) {
 			got := tc.set1.Intersection(tc.set2)
 			assert.Equal(t, tc.want, got)
@@ -42,22 +45,19 @@ func TestIntersection(t *testing.T) {
 	}
 }
 
+var	unionTestCases = []TestCase {
+	{empty, empty, empty},
+	{singleton, odd, odd},
+	{singleton, even, Make("0","1", "2", "4", "6", "8")},
+	{even, odd, universe},
+	{even, even, even},
+	{universe, even, universe},
+	{universe, empty, universe},
+	{prime, fibonacci, Make("0", "1", "2", "3", "5", "7", "8")},
+}
+
 func TestUnion(t *testing.T) {
-	testCases := []struct {
-		set1 Set
-		set2 Set
-		want Set
-	}{
-		{empty, empty, empty},
-		{singleton, odd, odd},
-		{singleton, even, Make("0","1", "2", "4", "6", "8")},
-		{even, odd, universe},
-		{even, even, even},
-		{universe, even, universe},
-		{universe, empty, universe},
-		{prime, fibonacci, Make("0", "1", "2", "3", "5", "7", "8")},
-	}
-	for _, tc := range testCases {
+	for _, tc := range unionTestCases {
 		t.Run(fmt.Sprintf("%v.Union(%v) is %v", tc.set1, tc.set2, tc.want), func(t *testing.T) {
 			got := tc.set1.Union(tc.set2)
 			assert.Equal(t, tc.want, got)
@@ -65,20 +65,17 @@ func TestUnion(t *testing.T) {
 	}
 }
 
+var differenceTestCases = []TestCase {
+	{empty, empty, empty},
+	{singleton, empty, singleton},
+	{singleton, singleton, empty},
+	{universe, even, odd},
+	{prime, fibonacci, Make("7")},
+	{fibonacci, prime, Make("0", "1", "8")},
+}
+
 func TestDifference(t *testing.T) {
-	testCases := []struct {
-		set1 Set
-		set2 Set
-		want Set
-	}{
-		{empty, empty, empty},
-		{singleton, empty, singleton},
-		{singleton, singleton, empty},
-		{universe, even, odd},
-		{prime, fibonacci, Make("7")},
-		{fibonacci, prime, Make("0", "1", "8")},
-	}
-	for _, tc := range testCases {
+	for _, tc := range differenceTestCases {
 		t.Run(fmt.Sprintf("%v.Difference(%v) is %v", tc.set1, tc.set2, tc.want), func(t *testing.T) {
 			got := tc.set1.Difference(tc.set2)
 			assert.Equal(t, tc.want, got)
@@ -86,64 +83,19 @@ func TestDifference(t *testing.T) {
 	}
 }
 
+var symmetricDifferenceTestCases = []TestCase{
+	{empty, empty, empty},
+	{singleton, empty, singleton},
+	{empty, singleton, singleton},
+	{universe, even, odd},
+	{odd, even, universe},
+	{fibonacci, prime, Make("0", "1", "7", "8")},
+}
+
 func TestSymmetricDifference(t *testing.T) {
-	testCases := []struct {
-		set1 Set
-		set2 Set
-		want Set
-	}{
-		{empty, empty, empty},
-		{singleton, empty, singleton},
-		{empty, singleton, singleton},
-		{universe, even, odd},
-		{odd, even, universe},
-		{fibonacci, prime, Make("0", "1", "7", "8")},
-	}
-	for _, tc := range testCases {
+	for _, tc := range symmetricDifferenceTestCases {
 		t.Run(fmt.Sprintf("%v.SymmetricDifference(%v) is %v", tc.set1, tc.set2, tc.want), func(t *testing.T) {
 			got := tc.set1.SymmetricDifference(tc.set2)
-			assert.Equal(t, tc.want, got)
-		})
-	}
-}
-
-func TestSubsetOf(t *testing.T) {
-	testCases := []struct {
-		set1 Set
-		set2 Set
-		want bool
-	}{
-		{empty, empty, true},
-		{singleton, empty, false},
-		{empty, singleton, true},
-		{universe, even, false},
-		{even, universe, true},
-		{fibonacci, prime, false},
-	}
-	for _, tc := range testCases {
-		t.Run(fmt.Sprintf("%v.SubsetOf(%v) is %v", tc.set1, tc.set2, tc.want), func(t *testing.T) {
-			got := tc.set1.SubsetOf(tc.set2)
-			assert.Equal(t, tc.want, got)
-		})
-	}
-}
-
-func TestSupersetOf(t *testing.T) {
-	testCases := []struct {
-		set1 Set
-		set2 Set
-		want bool
-	}{
-		{empty, empty, true},
-		{singleton, empty, true},
-		{empty, singleton, false},
-		{universe, even, true},
-		{even, universe, false},
-		{fibonacci, prime, false},
-	}
-	for _, tc := range testCases {
-		t.Run(fmt.Sprintf("%v.SupersetOf(%v) is %v", tc.set1, tc.set2, tc.want), func(t *testing.T) {
-			got := tc.set1.SupersetOf(tc.set2)
 			assert.Equal(t, tc.want, got)
 		})
 	}

@@ -37,6 +37,7 @@ func (s Set) Len() int {
 }
 
 // Has reports whether set contains the element.
+// Math: S ∋ e.
 func (s Set) Has(elem string) bool {
 	_, found := s.store[elem]
 	return found
@@ -92,4 +93,13 @@ func (s Set) Pop() (elem string, found bool) {
 		return elem, true
 	}
 	return "", false
+}
+
+// Copy returns a new Set: a copy of s.
+func (s Set) Copy() Set {
+	res := Make()
+	for elem := range s.store {
+		res.Add(elem)
+	}
+	return res
 }

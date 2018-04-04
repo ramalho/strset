@@ -146,3 +146,19 @@ func TestPop_3(t *testing.T) {
 	assert.False(t, found)
 
 }
+
+func TestCopy(t *testing.T) {
+	testCases := []Set {
+		Make(),
+		Make("a"),
+		Make("a", "b"),
+	}
+	for _, set := range testCases {
+		t.Run(fmt.Sprintf("%v.Copy()", set), func(t *testing.T) {
+			clone := set.Copy()
+			assert.True(t, set.Equal(clone))
+			set.Add("zzz")
+			assert.False(t, set.Equal(clone))
+		})
+	}
+}

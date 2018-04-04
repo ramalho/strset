@@ -109,3 +109,40 @@ func TestRemove(t *testing.T) {
 	}
 }
 
+func TestPop(t *testing.T) {
+	testCases := []struct {
+		s1 Set
+		wantElem string
+		wantFound bool
+		s2 Set
+
+	}{
+		{Make(), "", false, Make()},
+		{Make("a"), "a", true, Make()},
+	}
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("%v pop, got (%v, %v) remain %v",
+					tc.s1, tc.wantElem, tc.wantFound, tc.s2),
+			func(t *testing.T) {
+				elem, found := tc.s1.Pop()
+				assert.Equal(t, tc.wantElem, elem)
+				assert.Equal(t, tc.wantFound, found)
+				assert.True(t, tc.s1.Equal(tc.s2))
+			})
+	}
+}
+
+func TestPop_3(t *testing.T) {
+	s := Make("a", "b", "c")
+	for wantLen:=2; wantLen>=0; wantLen-- {
+		elem, found := s.Pop()
+		assert.Equal(t,wantLen, s.Len())
+		assert.NotEqual(t, "", elem)
+		assert.True(t, found)
+	}
+	elem, found := s.Pop()
+	assert.Equal(t, 0, s.Len())
+	assert.Equal(t, "", elem)
+	assert.False(t, found)
+
+}

@@ -83,3 +83,13 @@ func (s Set) Equal(other Set) bool {
 func (s Set) Remove(elem string) {
 	delete(s.store, elem)
 }
+
+// Pop tries to return some element of s, deleting it. If there was an element,
+// the pair (element, true) is returned. Otherwise, the result is ("", false).
+func (s Set) Pop() (elem string, found bool) {
+	for elem = range s.store {
+		delete(s.store, elem)
+		return elem, true
+	}
+	return "", false
+}

@@ -32,19 +32,18 @@ func TestMake(t *testing.T) {
 
 func TestHas(t *testing.T) {
 	testCases := []struct {
-		elems []string
+		set    Set
 		needle string
-		want bool
+		want   bool
 	}{
-		{[]string{}, "a", false},
-		{[]string{"a"}, "a", true},
-		{[]string{"a", "b"}, "b", true},
-		{[]string{"a", "b"}, "c", false},
+		{Make(), "a", false},
+		{Make("a"), "a", true},
+		{Make("a", "b"), "b", true},
+		{Make("a", "b"), "c", false},
 	}
 	for _, tc := range testCases {
-		t.Run(fmt.Sprintf("%q in %v is %v", tc.elems, tc.needle, tc.want), func(t *testing.T) {
-			s := Make(tc.elems...)
-			got := s.Has(tc.needle)
+		t.Run(fmt.Sprintf("%q in %v is %v", tc.set, tc.needle, tc.want), func(t *testing.T) {
+			got := tc.set.Has(tc.needle)
 			assert.Equal(t, tc.want, got)
 		})
 	}
@@ -52,17 +51,16 @@ func TestHas(t *testing.T) {
 
 func TestString(t *testing.T) {
 	testCases := []struct {
-		elems []string
+		set  Set
 		want string
 	}{
-		{[]string{}, `Set{}`},
-		{[]string{"a"}, `Set{a}`},
-		{[]string{"b", "a"}, `Set{a b}`},
+		{Make(), `Set{}`},
+		{Make("a"), `Set{a}`},
+		{Make("b", "a"), `Set{a b}`},
 	}
 	for _, tc := range testCases {
-		t.Run(fmt.Sprintf("%v gets %q", tc.elems, tc.want), func(t *testing.T) {
-			s := Make(tc.elems...)
-			got := fmt.Sprint(s)
+		t.Run(fmt.Sprintf("%v gets %q", tc.set, tc.want), func(t *testing.T) {
+			got := fmt.Sprint(tc.set)
 			assert.Equal(t, tc.want, got)
 		})
 	}
@@ -70,27 +68,44 @@ func TestString(t *testing.T) {
 
 func TestEqual(t *testing.T) {
 	testCases := []struct {
-		elems1 []string
-		elems2 []string
+		set1 Set
+		set2 Set
 		want bool
 	}{
-		{[]string{}, []string{}, true},
-		{[]string{"a"}, []string{}, false},
-		{[]string{}, []string{"b"}, false},
-		{[]string{"a"}, []string{"a"}, true},
-		{[]string{"a"}, []string{"b"}, false},
-		{[]string{"a", "b"}, []string{"a", "b"}, true},
-		{[]string{"a", "b"}, []string{"b", "a"}, true},
-		{[]string{"a", "b"}, []string{"a", "b", "c"}, false},
+		{Make(), Make(), true},
+		{Make("a"), Make(), false},
+		{Make(), Make("b"), false},
+		{Make("a"), Make("a"), true},
+		{Make("a"), Make("b"), false},
+		{Make("a", "b"), Make("a", "b"), true},
+		{Make("a", "b"), Make("b", "a"), true},
+		{Make("a", "b"), Make("a", "b", "c"), false},
 	}
 	for _, tc := range testCases {
-		t.Run(fmt.Sprintf("%v eq %v is %v", tc.elems1, tc.elems2, tc.want), func(t *testing.T) {
-			s1 := Make(tc.elems1...)
-			s2 := Make(tc.elems2...)
-			got := s1.Equal(s2)
+		t.Run(fmt.Sprintf("%v eq %v is %v", tc.set1, tc.set2, tc.want), func(t *testing.T) {
+			got := tc.set1.Equal(tc.set2)
 			assert.Equal(t, tc.want, got)
 		})
 	}
 }
 
+func TestRemove(t *testing.T) {
+	testCases := []struct {
+		s1 Set
+		out string
+		s2 Set
+	}{
+		{Make(), "a", Make()},
+		{Make("a"), "a",  Make()},
+		{Make("a"), "b", Make("a")},
+		{Make("a", "b"), "a", Make("b")},
+	}
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("%v remove %v remain %v", tc.s1, tc.out, tc.s2),
+			func(t *testing.T) {
+				tc.s1.Remove(tc.out)
+				assert.True(t, tc.s1.Equal(tc.s2))
+			})
+	}
+}
 

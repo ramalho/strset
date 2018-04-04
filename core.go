@@ -79,6 +79,7 @@ func (s Set) Equal(other Set) bool {
 	return len(s.store) == len(other.store) && s.allIn(other)
 }
 
-
-
-
+// Remove removes element from the set, if it is present.
+func (s Set) Remove(elem string) {
+	delete(s.store, elem)
+}

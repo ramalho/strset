@@ -1,4 +1,9 @@
+// Package strset provides a Set type for string elements.
 package strset
+
+/* Note: The only methods that change a Set after it is made
+   are in updaters.go
+*/
 
 import (
 	"bytes"
@@ -15,7 +20,9 @@ type Set struct {
 func Make(elems ...string) Set {
 	s := Set{}
 	s.store = make(map[string]struct{})
-	s.AddAll(elems...)
+	for _, elem := range elems {
+		s.store[elem] = struct{}{}
+	}
 	return s
 }
 
@@ -23,18 +30,6 @@ func Make(elems ...string) Set {
 // a string of elements separated by whitespace.
 func MakeFromText(text string) Set {
 	return Make(strings.Fields(text)...)
-}
-
-// Add adds element to set.
-func (s Set) Add(elem string) {
-	s.store[elem] = struct{}{}
-}
-
-// AddAll adds elements to set.
-func (s Set) AddAll(elems ...string) {
-	for _, elem := range elems {
-		s.Add(elem)
-	}
 }
 
 // Len reports the number of elements in the set.
@@ -94,28 +89,6 @@ func (s Set) allIn(other Set) bool {
 // Equal reports whether set is equal to other
 func (s Set) Equal(other Set) bool {
 	return len(s.store) == len(other.store) && s.allIn(other)
-}
-
-// Remove removes element from the set, if it is present.
-func (s Set) Remove(elem string) {
-	delete(s.store, elem)
-}
-
-// RemoveAll removes elements from the set, if they are present.
-func (s Set) RemoveAll(elems ...string) {
-	for _, elem := range elems {
-		s.Remove(elem)
-	}
-}
-
-// Pop tries to return some element of s, deleting it. If there was an element,
-// the pair (element, true) is returned. Otherwise, the result is ("", false).
-func (s Set) Pop() (elem string, found bool) {
-	for elem = range s.store {
-		delete(s.store, elem)
-		return elem, true
-	}
-	return "", false
 }
 
 // Copy returns a new Set: a copy of s.

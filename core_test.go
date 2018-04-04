@@ -49,6 +49,28 @@ func TestHas(t *testing.T) {
 	}
 }
 
+func TestHasAll(t *testing.T) {
+	testCases := []struct {
+		set Set
+		slice []string
+		want bool
+	}{
+		{empty, empty.Elems(), true},
+		{singleton, empty.Elems(), true},
+		{empty, singleton.Elems(), false},
+		{universe, even.Elems(), true},
+		{even, universe.Elems(), false},
+		{fibonacci, prime.Elems(), false},
+	}
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("%v.HasAll(%v) is %v", tc.set, tc.slice, tc.want), func(t *testing.T) {
+			got := tc.set.HasAll(tc.slice...)
+			assert.Equal(t, tc.want, got)
+		})
+	}
+}
+
+
 func TestString(t *testing.T) {
 	testCases := []struct {
 		set  Set
@@ -109,6 +131,16 @@ func TestRemove(t *testing.T) {
 	}
 }
 
+func TestRemoveAll(t *testing.T) {
+	for _, tc := range differenceTestCases {
+		t.Run(fmt.Sprintf("%v.RemoveAll(%v) is %v", tc.set1, tc.set2, tc.want), func(t *testing.T) {
+			got := tc.set1.Copy()
+			got.RemoveAll(tc.set2.Elems()...)
+			assert.Equal(t, tc.want, got)
+		})
+	}
+}
+
 func TestPop(t *testing.T) {
 	testCases := []struct {
 		s1 Set
@@ -162,3 +194,23 @@ func TestCopy(t *testing.T) {
 		})
 	}
 }
+
+func TestMakeFromText(t *testing.T) {
+	testCases := []struct {
+		text string
+		want Set
+	}{
+		{"" , Make()},
+		{"  " , Make()},
+		{" a ", Make("a")},
+		{"  b a ", Make("a", "b")},
+		{"a b a", Make("a", "b")},
+	}
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("%v makes %v", tc.text, tc.want), func(t *testing.T) {
+			got := MakeFromText(tc.text)
+			assert.Equal(t, tc.want, got)
+		})
+	}
+}
+

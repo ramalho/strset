@@ -19,6 +19,12 @@ func Make(elems ...string) Set {
 	return s
 }
 
+// MakeFromText creates and returns a new Set from
+// a string of elements separated by whitespace.
+func MakeFromText(text string) Set {
+	return Make(strings.Fields(text)...)
+}
+
 // Add adds element to set.
 func (s Set) Add(elem string) {
 	s.store[elem] = struct{}{}
@@ -41,6 +47,16 @@ func (s Set) Len() int {
 func (s Set) Has(elem string) bool {
 	_, found := s.store[elem]
 	return found
+}
+
+// HasAll reports whether s contains all the given elements
+func (s Set) HasAll(elems ...string) bool {
+	for _, elem := range elems {
+		if !s.Has(elem) {
+			return false
+		}
+	}
+	return true
 }
 
 // Elems returns a new slice with the elements of s.
@@ -83,6 +99,13 @@ func (s Set) Equal(other Set) bool {
 // Remove removes element from the set, if it is present.
 func (s Set) Remove(elem string) {
 	delete(s.store, elem)
+}
+
+// RemoveAll removes elements from the set, if they are present.
+func (s Set) RemoveAll(elems ...string) {
+	for _, elem := range elems {
+		s.Remove(elem)
+	}
 }
 
 // Pop tries to return some element of s, deleting it. If there was an element,

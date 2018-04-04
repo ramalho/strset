@@ -48,12 +48,13 @@ func TestIntersection(t *testing.T) {
 var	unionTestCases = []TestCase {
 	{empty, empty, empty},
 	{singleton, odd, odd},
-	{singleton, even, Make("0","1", "2", "4", "6", "8")},
+	{singleton, even, Make("0", "1", "2", "4", "6", "8")},
 	{even, odd, universe},
 	{even, even, even},
 	{universe, even, universe},
 	{universe, empty, universe},
 	{prime, fibonacci, Make("0", "1", "2", "3", "5", "7", "8")},
+
 }
 
 func TestUnion(t *testing.T) {
@@ -99,4 +100,11 @@ func TestSymmetricDifference(t *testing.T) {
 			assert.Equal(t, tc.want, got)
 		})
 	}
+}
+
+func Example() {
+	s1 := Make("red", "green", "blue", "yellow")
+	s2 := MakeFromText("yellow green white")
+	fmt.Println(s1.Intersection(s2))
+	// Output: Set{green yellow}
 }

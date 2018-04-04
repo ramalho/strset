@@ -42,7 +42,7 @@ func (s Set) Difference(other Set) Set {
 	return res
 }
 
-// SymmetricDifference returns a new Set with members present
+// SymmetricDifference returns a new Set with elements present
 // in either set but not on both. Think boolean XOR.
 // Math: S ∆ Z.
 func (s Set) SymmetricDifference(other Set) Set {

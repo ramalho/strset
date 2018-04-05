@@ -15,7 +15,7 @@ func TestMake_empty(t *testing.T) {
 func TestMake(t *testing.T) {
 	testCases := []struct {
 		elems []string
-		want int
+		want  int
 	}{
 		{[]string{}, 0},
 		{[]string{"a"}, 1},
@@ -51,16 +51,16 @@ func TestHas(t *testing.T) {
 
 func TestHasAll(t *testing.T) {
 	testCases := []struct {
-		set Set
+		set   Set
 		slice []string
-		want bool
+		want  bool
 	}{
-		{empty, empty.Elems(), true},
-		{singleton, empty.Elems(), true},
-		{empty, singleton.Elems(), false},
-		{universe, even.Elems(), true},
-		{even, universe.Elems(), false},
-		{fibonacci, prime.Elems(), false},
+		{empty, empty.ToSlice(), true},
+		{singleton, empty.ToSlice(), true},
+		{empty, singleton.ToSlice(), false},
+		{universe, even.ToSlice(), true},
+		{even, universe.ToSlice(), false},
+		{fibonacci, prime.ToSlice(), false},
 	}
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("%v.HasAll(%v) is %v", tc.set, tc.slice, tc.want), func(t *testing.T) {
@@ -69,7 +69,6 @@ func TestHasAll(t *testing.T) {
 		})
 	}
 }
-
 
 func TestString(t *testing.T) {
 	testCases := []struct {
@@ -112,7 +111,7 @@ func TestEqual(t *testing.T) {
 }
 
 func TestCopy(t *testing.T) {
-	testCases := []Set {
+	testCases := []Set{
 		Make(),
 		Make("a"),
 		Make("a", "b"),
@@ -132,8 +131,8 @@ func TestMakeFromText(t *testing.T) {
 		text string
 		want Set
 	}{
-		{"" , Make()},
-		{"  " , Make()},
+		{"", Make()},
+		{"  ", Make()},
 		{" a ", Make("a")},
 		{"  b a ", Make("a", "b")},
 		{"a b a", Make("a", "b")},
@@ -145,4 +144,3 @@ func TestMakeFromText(t *testing.T) {
 		})
 	}
 }
-

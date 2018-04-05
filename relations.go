@@ -14,5 +14,3 @@ func (s Set) SubsetOf(other Set) bool {
 func (s Set) SupersetOf(other Set) bool {
 	return other.SubsetOf(s)
 }
-
-

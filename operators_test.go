@@ -23,18 +23,17 @@ type TestCase struct {
 	want Set
 }
 
-var	intersectionTestCases = []TestCase {
-		{empty, empty, empty},
-		{singleton, even, empty},
-		{singleton, odd, singleton},
-		{even, odd, empty},
-		{even, even, even},
-		{universe, even, even},
-		{universe, empty, empty},
-		{prime, fibonacci, Make("2", "3", "5")},
-		{fibonacci, prime, Make("2", "3", "5")},
-
-	}
+var intersectionTestCases = []TestCase{
+	{empty, empty, empty},
+	{singleton, even, empty},
+	{singleton, odd, singleton},
+	{even, odd, empty},
+	{even, even, even},
+	{universe, even, even},
+	{universe, empty, empty},
+	{prime, fibonacci, Make("2", "3", "5")},
+	{fibonacci, prime, Make("2", "3", "5")},
+}
 
 func TestIntersection(t *testing.T) {
 	for _, tc := range intersectionTestCases {
@@ -45,7 +44,7 @@ func TestIntersection(t *testing.T) {
 	}
 }
 
-var	unionTestCases = []TestCase {
+var unionTestCases = []TestCase{
 	{empty, empty, empty},
 	{singleton, odd, odd},
 	{singleton, even, Make("0", "1", "2", "4", "6", "8")},
@@ -54,7 +53,6 @@ var	unionTestCases = []TestCase {
 	{universe, even, universe},
 	{universe, empty, universe},
 	{prime, fibonacci, Make("0", "1", "2", "3", "5", "7", "8")},
-
 }
 
 func TestUnion(t *testing.T) {
@@ -66,7 +64,7 @@ func TestUnion(t *testing.T) {
 	}
 }
 
-var differenceTestCases = []TestCase {
+var differenceTestCases = []TestCase{
 	{empty, empty, empty},
 	{singleton, empty, singleton},
 	{singleton, singleton, empty},

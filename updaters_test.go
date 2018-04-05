@@ -7,14 +7,24 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestAddAll(t *testing.T) {
+	for _, tc := range unionTestCases {
+		t.Run(fmt.Sprintf("%v.AddAll(%v) is %v", tc.set1, tc.set2, tc.want), func(t *testing.T) {
+			got := tc.set1.Copy()
+			got.AddAll(tc.set2.ToSlice()...)
+			assert.Equal(t, tc.want, got)
+		})
+	}
+}
+
 func TestRemove(t *testing.T) {
 	testCases := []struct {
-		s1 Set
+		s1  Set
 		out string
-		s2 Set
+		s2  Set
 	}{
 		{Make(), "a", Make()},
-		{Make("a"), "a",  Make()},
+		{Make("a"), "a", Make()},
 		{Make("a"), "b", Make("a")},
 		{Make("a", "b"), "a", Make("b")},
 	}
@@ -31,7 +41,7 @@ func TestRemoveAll(t *testing.T) {
 	for _, tc := range differenceTestCases {
 		t.Run(fmt.Sprintf("%v.RemoveAll(%v) is %v", tc.set1, tc.set2, tc.want), func(t *testing.T) {
 			got := tc.set1.Copy()
-			got.RemoveAll(tc.set2.Elems()...)
+			got.RemoveAll(tc.set2.ToSlice()...)
 			assert.Equal(t, tc.want, got)
 		})
 	}
@@ -39,11 +49,10 @@ func TestRemoveAll(t *testing.T) {
 
 func TestPop(t *testing.T) {
 	testCases := []struct {
-		s1 Set
-		wantElem string
+		s1        Set
+		wantElem  string
 		wantFound bool
-		s2 Set
-
+		s2        Set
 	}{
 		{Make(), "", false, Make()},
 		{Make("a"), "a", true, Make()},
@@ -62,9 +71,9 @@ func TestPop(t *testing.T) {
 
 func TestPop_3(t *testing.T) {
 	s := Make("a", "b", "c")
-	for wantLen:=2; wantLen>=0; wantLen-- {
+	for wantLen := 2; wantLen >= 0; wantLen-- {
 		elem, found := s.Pop()
-		assert.Equal(t,wantLen, s.Len())
+		assert.Equal(t, wantLen, s.Len())
 		assert.NotEqual(t, "", elem)
 		assert.True(t, found)
 	}
@@ -76,7 +85,7 @@ func TestPop_3(t *testing.T) {
 }
 
 func TestClear(t *testing.T) {
-	testCases := []Set {
+	testCases := []Set{
 		Make(),
 		Make("a"),
 		Make("a", "b"),

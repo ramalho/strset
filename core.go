@@ -1,8 +1,9 @@
 // Package strset provides a Set type for string elements.
 package strset
 
-/* Note: The only methods that change a Set after it is made
-   are in updaters.go
+/* Implementation note: The only methods that change a Set
+   after it is created are in updaters.go. If you need an
+   immutable Set, delete that and updaters_test.go.
 */
 
 import (
@@ -54,12 +55,14 @@ func (s Set) HasAll(elems ...string) bool {
 	return true
 }
 
-// Elems returns a new slice with the elements of s.
+// ToSlice returns a new slice with the elements of s.
 // The order of the elements is undefined.
-func (s Set) Elems() []string {
-	var elems []string
-	for elem := range s.store {
-		elems = append(elems, elem)
+func (s Set) ToSlice() []string {
+	elems := make([]string, len(s.store))
+	i := 0
+	for k := range s.store {
+		elems[i] = k
+		i++
 	}
 	return elems
 }
@@ -67,7 +70,7 @@ func (s Set) Elems() []string {
 // String returns a string representation of s with
 // elements in lexicographic order.
 func (s Set) String() string {
-	elems := s.Elems()
+	elems := s.ToSlice()
 	sort.Strings(elems)
 	var buf bytes.Buffer
 	buf.WriteString("Set{")

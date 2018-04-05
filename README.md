@@ -18,9 +18,11 @@ Some features of the `strset.Set` type:
 * `Make` builds a set from zero or more strings (or `[]string...`).
 * `MakeFromText` builds a set from a single string with elements separated by whitespace.
 * `String` method returns elements in ascending order.
-* Set operations returning new sets: intersection, union, difference, symmetric difference.
-* Methods updating set in-place for each operation above.
-* `Pop` method to get and delete one unspecified element.
-* Need an immutable set? Remove `updaters.go` from your build!
+* Methods returning new sets: intersection, union, difference, symmetric difference.
+* Methods updating receiver in-place for each operation above.
+* `Pop` method to retrieve and delete one unspecified element.
+* Need an immutable set? Just remove `updaters.go` from the build.
+* 100% test coverage.
+* Not thread-safe.
 
 Happy hacking!

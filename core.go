@@ -102,3 +102,15 @@ func (s Set) Copy() Set {
 	}
 	return res
 }
+
+// Iter returns a channel to goroutine yielding elements one by one.
+func (s Set) Iter() <-chan string {
+	ch := make(chan string)
+	go func() {
+		for elem := range s.store {
+			ch <- elem
+		}
+		close(ch)
+	}()
+	return ch
+}

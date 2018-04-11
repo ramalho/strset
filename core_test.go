@@ -144,3 +144,23 @@ func TestMakeFromText(t *testing.T) {
 		})
 	}
 }
+
+func TestIter(t *testing.T) {
+	testCases := []struct {
+		set Set
+		want []string
+	}{
+		{Make(), []string{}},
+		{Make("a"), []string{"a"}},
+		{Make("a", "b"), []string{"a", "b"}},
+	}
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("%v yields %v", tc.set, tc.want), func(t *testing.T) {
+			got := []string{}
+			for elem := range tc.set.Iter() {
+				got = append(got, elem)
+			}
+			assert.ElementsMatch(t, tc.want, got)
+		})
+	}
+}

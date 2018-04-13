@@ -38,15 +38,15 @@ func (s Set) Len() int {
 	return len(s.store)
 }
 
-// hasOne reports whether set contains the element.
+// Has reports whether set contains the element.
 // Math: S ∋ e.
-func (s Set) hasOne(elem string) bool {
+func (s Set) Has(elem string) bool {
 	_, found := s.store[elem]
 	return found
 }
 
-// Has reports whether s contains all the given elements
-func (s Set) Has(elems ...string) bool {
+// HasAll reports whether s contains all the given elements
+func (s Set) HasAll(elems ...string) bool {
 	for _, elem := range elems {
 		if _, found := s.store[elem]; !found {
 			return false
@@ -98,7 +98,7 @@ func (s Set) Equal(other Set) bool {
 func (s Set) Copy() Set {
 	res := Make()
 	for elem := range s.store {
-		res.Add(elem)
+		res.store[elem] = struct{}{}
 	}
 	return res
 }

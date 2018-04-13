@@ -7,11 +7,30 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestAdd(t *testing.T) {
+	testCases := []struct {
+		s1   Set
+		elem string
+		s2   Set
+	}{
+		{Make(), "a", Make("a")},
+		{Make("a"), "a", Make("a")},
+		{Make("a"), "b", Make("a", "b")},
+	}
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("%v add %v result %v", tc.s1, tc.elem, tc.s2),
+			func(t *testing.T) {
+				tc.s1.Add(tc.elem)
+				assert.True(t, tc.s1.Equal(tc.s2))
+			})
+	}
+}
+
 func TestAddAll(t *testing.T) {
 	for _, tc := range unionTestCases {
-		t.Run(fmt.Sprintf("%v.Add(%v) is %v", tc.set1, tc.set2, tc.want), func(t *testing.T) {
+		t.Run(fmt.Sprintf("%v.AddAll(%v) is %v", tc.set1, tc.set2, tc.want), func(t *testing.T) {
 			got := tc.set1.Copy()
-			got.Add(tc.set2.ToSlice()...)
+			got.AddAll(tc.set2.ToSlice()...)
 			assert.Equal(t, tc.want, got)
 		})
 	}
@@ -39,9 +58,9 @@ func TestRemove(t *testing.T) {
 
 func TestRemoveAll(t *testing.T) {
 	for _, tc := range differenceTestCases {
-		t.Run(fmt.Sprintf("%v.Remove(%v) is %v", tc.set1, tc.set2, tc.want), func(t *testing.T) {
+		t.Run(fmt.Sprintf("%v.RemoveAll(%v) is %v", tc.set1, tc.set2, tc.want), func(t *testing.T) {
 			got := tc.set1.Copy()
-			got.Remove(tc.set2.ToSlice()...)
+			got.RemoveAll(tc.set2.ToSlice()...)
 			assert.Equal(t, tc.want, got)
 		})
 	}

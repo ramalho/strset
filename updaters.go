@@ -5,15 +5,25 @@ package strset
    immutable Set, delete this and updaters_test.go.
 */
 
-// Add adds elements to set.
-func (s Set) Add(elems ...string) {
+// Add adds element to set.
+func (s Set) Add(elem string) {
+	s.store[elem] = struct{}{}
+}
+
+// AddAll adds elements to set.
+func (s Set) AddAll(elems ...string) {
 	for _, elem := range elems {
 		s.store[elem] = struct{}{}
 	}
 }
 
-// Remove removes elements from the set, if they are present.
-func (s Set) Remove(elems ...string) {
+// Remove removes element from the set, if it is present.
+func (s Set) Remove(elem string) {
+	delete(s.store, elem)
+}
+
+// RemoveAll removes elements from the set, if they are present.
+func (s Set) RemoveAll(elems ...string) {
 	for _, elem := range elems {
 		delete(s.store, elem)
 	}
@@ -40,7 +50,7 @@ func (s *Set) Clear() {
 // that are in s AND in other. Math: S ∩ Z.
 func (s Set) IntersectionUpdate(other Set) {
 	for elem := range s.store {
-		if !other.hasOne(elem) {
+		if !other.Has(elem) {
 			delete(s.store, elem)
 		}
 	}

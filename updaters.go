@@ -5,7 +5,7 @@ package strset
    immutable Set, delete this and updaters_test.go.
 */
 
-// Add adds element to set.
+// Add element to set.
 func (s Set) Add(elem string) {
 	s.store[elem] = struct{}{}
 }
@@ -17,12 +17,12 @@ func (s Set) AddAll(elems ...string) {
 	}
 }
 
-// Remove removes element from the set, if it is present.
+// Remove element from set, if it is present.
 func (s Set) Remove(elem string) {
 	delete(s.store, elem)
 }
 
-// RemoveAll removes elements from the set, if they are present.
+// RemoveAll removes elements from set, if they are present.
 func (s Set) RemoveAll(elems ...string) {
 	for _, elem := range elems {
 		delete(s.store, elem)

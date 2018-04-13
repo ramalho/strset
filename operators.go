@@ -13,8 +13,8 @@ func (s Set) Intersection(other Set) Set {
 	}
 	res := Make()
 	for elem := range shorter.store {
-		if longer.Has(elem) {
-			res.Add(elem)
+		if longer.hasOne(elem) {
+			res.store[elem] = struct{}{}
 		}
 	}
 	return res
@@ -25,7 +25,7 @@ func (s Set) Intersection(other Set) Set {
 func (s Set) Union(other Set) Set {
 	res := s.Copy()
 	for elem := range other.store {
-		res.Add(elem)
+		res.store[elem] = struct{}{}
 	}
 	return res
 }
@@ -35,8 +35,8 @@ func (s Set) Union(other Set) Set {
 func (s Set) Difference(other Set) Set {
 	res := Make()
 	for elem := range s.store {
-		if !other.Has(elem) {
-			res.Add(elem)
+		if !other.hasOne(elem) {
+			res.store[elem] = struct{}{}
 		}
 	}
 	return res

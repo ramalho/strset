@@ -8,12 +8,12 @@ import (
 )
 
 var (
-	universe  = Make("0", "1", "2", "3", "4", "5", "6", "7", "8", "9")
-	even      = Make("0",      "2",      "4",      "6",      "8")
-	odd       = Make(     "1",      "3",      "5",      "7",      "9")
-	prime     = Make(          "2", "3",      "5",      "7")
-	fibonacci = Make("0", "1", "2", "3",      "5",           "8")
-	singleton = Make(     "1")
+	universe  = MakeFromText("0 1 2 3 4 5 6 7 8 9")
+	even      = MakeFromText("0   2   4   6   8  ")
+	odd       = MakeFromText("  1   3   5   7   9")
+	prime     = MakeFromText("    2 3   5   7    ")
+	fibonacci = MakeFromText("0 1 2 3   5     8  ")
+	singleton = MakeFromText("  1                ")
 	empty     = Make()
 )
 

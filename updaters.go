@@ -5,27 +5,17 @@ package strset
    immutable Set, delete this and updaters_test.go.
 */
 
-// Add adds element to set.
-func (s Set) Add(elem string) {
-	s.store[elem] = struct{}{}
-}
-
-// AddAll adds elements to set.
-func (s Set) AddAll(elems ...string) {
+// Add adds elements to set.
+func (s Set) Add(elems ...string) {
 	for _, elem := range elems {
-		s.Add(elem)
+		s.store[elem] = struct{}{}
 	}
 }
 
-// Remove removes element from the set, if it is present.
-func (s Set) Remove(elem string) {
-	delete(s.store, elem)
-}
-
-// RemoveAll removes elements from the set, if they are present.
-func (s Set) RemoveAll(elems ...string) {
+// Remove removes elements from the set, if they are present.
+func (s Set) Remove(elems ...string) {
 	for _, elem := range elems {
-		s.Remove(elem)
+		delete(s.store, elem)
 	}
 }
 
@@ -50,8 +40,8 @@ func (s *Set) Clear() {
 // that are in s AND in other. Math: S ∩ Z.
 func (s Set) IntersectionUpdate(other Set) {
 	for elem := range s.store {
-		if !other.Has(elem) {
-			s.Remove(elem)
+		if !other.hasOne(elem) {
+			delete(s.store, elem)
 		}
 	}
 }
@@ -60,7 +50,7 @@ func (s Set) IntersectionUpdate(other Set) {
 // are in s OR in other. Math: S ∪ Z.
 func (s Set) UnionUpdate(other Set) {
 	for elem := range other.store {
-		s.Add(elem)
+		s.store[elem] = struct{}{}
 	}
 }
 
@@ -68,7 +58,7 @@ func (s Set) UnionUpdate(other Set) {
 // that appear in other. Math: S \ Z.
 func (s Set) DifferenceUpdate(other Set) {
 	for elem := range other.store {
-		s.Remove(elem)
+		delete(s.store, elem)
 	}
 }
 

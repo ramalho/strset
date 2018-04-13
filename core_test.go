@@ -49,7 +49,7 @@ func TestHas(t *testing.T) {
 	}
 }
 
-func TestHasAll(t *testing.T) {
+func TestHas_slice(t *testing.T) {
 	testCases := []struct {
 		set   Set
 		slice []string
@@ -63,8 +63,8 @@ func TestHasAll(t *testing.T) {
 		{fibonacci, prime.ToSlice(), false},
 	}
 	for _, tc := range testCases {
-		t.Run(fmt.Sprintf("%v.HasAll(%v) is %v", tc.set, tc.slice, tc.want), func(t *testing.T) {
-			got := tc.set.HasAll(tc.slice...)
+		t.Run(fmt.Sprintf("%v.Has(%v...) is %v", tc.set, tc.slice, tc.want), func(t *testing.T) {
+			got := tc.set.Has(tc.slice...)
 			assert.Equal(t, tc.want, got)
 		})
 	}
@@ -147,7 +147,7 @@ func TestMakeFromText(t *testing.T) {
 
 func TestIter(t *testing.T) {
 	testCases := []struct {
-		set Set
+		set  Set
 		want []string
 	}{
 		{Make(), []string{}},

@@ -180,13 +180,13 @@ func TestIter(t *testing.T) {
 	}
 }
 
-func ExampleIter() {
+func ExampleSet_Iter() {
 	set := MakeFromText("beta alpha delta gamma")
 	result := []string{}
-	for elem := range set.Iter() {
+	for elem := range set.Iter() { // order is undefined
 		result = append(result, elem)
 	}
-	sort.Strings(result)
+	sort.Strings(result) // must sort so example passes
 	fmt.Println(result)
 	// Output: [alpha beta delta gamma]
 }

@@ -2,6 +2,7 @@ package strset
 
 import (
 	"fmt"
+	"sort"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -28,6 +29,13 @@ func TestMake(t *testing.T) {
 			assert.Equal(t, tc.want, s.Len())
 		})
 	}
+}
+
+func ExampleMake() {
+	w := []string{"beta", "alpha", "gamma", "beta"}
+	s := Make(w...)
+	fmt.Println(s)
+	// Output: Set{alpha beta gamma}
 }
 
 func TestHas(t *testing.T) {
@@ -68,6 +76,13 @@ func TestHasAll(t *testing.T) {
 			assert.Equal(t, tc.want, got)
 		})
 	}
+}
+
+func ExampleHasAll() {
+	s := MakeFromText("alpha beta gamma")
+	query := []string{"gamma", "beta"}
+	fmt.Println(s.HasAll(query...))
+	// Output: true
 }
 
 func TestString(t *testing.T) {
@@ -163,4 +178,15 @@ func TestIter(t *testing.T) {
 			assert.ElementsMatch(t, tc.want, got)
 		})
 	}
+}
+
+func ExampleIter() {
+	set := MakeFromText("beta alpha delta gamma")
+	result := []string{}
+	for elem := range set.Iter() {
+		result = append(result, elem)
+	}
+	sort.Strings(result)
+	fmt.Println(result)
+	// Output: [alpha beta delta gamma]
 }

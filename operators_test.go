@@ -100,6 +100,14 @@ func TestSymmetricDifference(t *testing.T) {
 	}
 }
 
+func ExampleSet_SymmetricDifference() {
+	s1 := MakeFromText("beta alpha delta gamma")
+	s2 := MakeFromText("beta delta pi")
+	fmt.Println(s1.SymmetricDifference(s2))
+	// Output:
+	// Set{alpha gamma pi}
+}
+
 func Example() {
 	s1 := Make("red", "green", "blue", "yellow")
 	s2 := MakeFromText("yellow green white")

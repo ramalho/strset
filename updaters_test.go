@@ -100,7 +100,6 @@ func TestPop_3(t *testing.T) {
 	assert.Equal(t, 0, s.Len())
 	assert.Equal(t, "", elem)
 	assert.False(t, found)
-
 }
 
 func TestClear(t *testing.T) {
@@ -155,4 +154,13 @@ func TestSymmetricDifferenceUpdate(t *testing.T) {
 			assert.Equal(t, tc.want, got)
 		})
 	}
+}
+
+func ExampleSet_SymmetricDifferenceUpdate() {
+	s1 := MakeFromText("beta alpha delta gamma")
+	s2 := MakeFromText("beta delta pi")
+	s1.SymmetricDifferenceUpdate(s2)
+	fmt.Println(s1)
+	// Output:
+	// Set{alpha gamma pi}
 }

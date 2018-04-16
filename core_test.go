@@ -51,7 +51,7 @@ func TestHas(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("%q in %v is %v", tc.set, tc.needle, tc.want), func(t *testing.T) {
-			got := tc.set.Has(tc.needle)
+			got := tc.set.Contains(tc.needle)
 			assert.Equal(t, tc.want, got)
 		})
 	}
@@ -71,8 +71,8 @@ func TestHasAll(t *testing.T) {
 		{fibonacci, prime.ToSlice(), false},
 	}
 	for _, tc := range testCases {
-		t.Run(fmt.Sprintf("%v.HasAll(%v...) is %v", tc.set, tc.slice, tc.want), func(t *testing.T) {
-			got := tc.set.HasAll(tc.slice...)
+		t.Run(fmt.Sprintf("%v.ContainsAll(%v...) is %v", tc.set, tc.slice, tc.want), func(t *testing.T) {
+			got := tc.set.ContainsAll(tc.slice...)
 			assert.Equal(t, tc.want, got)
 		})
 	}
@@ -81,7 +81,7 @@ func TestHasAll(t *testing.T) {
 func ExampleHasAll() {
 	s := MakeFromText("alpha beta gamma")
 	query := []string{"gamma", "beta"}
-	fmt.Println(s.HasAll(query...))
+	fmt.Println(s.ContainsAll(query...))
 	// Output: true
 }
 
@@ -172,7 +172,7 @@ func TestIter(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("%v yields %v", tc.set, tc.want), func(t *testing.T) {
 			got := []string{}
-			for elem := range tc.set.Iter() {
+			for elem := range tc.set.Channel() {
 				got = append(got, elem)
 			}
 			assert.ElementsMatch(t, tc.want, got)
@@ -183,7 +183,7 @@ func TestIter(t *testing.T) {
 func ExampleSet_Iter() {
 	set := MakeFromText("beta alpha delta gamma")
 	result := []string{}
-	for elem := range set.Iter() { // order is undefined
+	for elem := range set.Channel() { // order is undefined
 		result = append(result, elem)
 	}
 	sort.Strings(result) // must sort so example passes

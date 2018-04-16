@@ -50,7 +50,7 @@ func (s *Set) Clear() {
 // that are in s AND in other. Math: S ∩ Z.
 func (s Set) IntersectionUpdate(other Set) {
 	for elem := range s.store {
-		if !other.Has(elem) {
+		if !other.Contains(elem) {
 			delete(s.store, elem)
 		}
 	}

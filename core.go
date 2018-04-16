@@ -38,15 +38,15 @@ func (s Set) Len() int {
 	return len(s.store)
 }
 
-// Has reports whether set contains the element.
+// Contains reports whether set contains the element.
 // Math: S ∋ e.
-func (s Set) Has(elem string) bool {
+func (s Set) Contains(elem string) bool {
 	_, found := s.store[elem]
 	return found
 }
 
-// HasAll reports whether s contains all the given elements
-func (s Set) HasAll(elems ...string) bool {
+// ContainsAll reports whether s contains all the given elements.
+func (s Set) ContainsAll(elems ...string) bool {
 	for _, elem := range elems {
 		if _, found := s.store[elem]; !found {
 			return false
@@ -89,7 +89,7 @@ func (s Set) allIn(other Set) bool {
 	return true
 }
 
-// Equal reports whether set is equal to other
+// Equal reports whether set is equal to other.
 func (s Set) Equal(other Set) bool {
 	return len(s.store) == len(other.store) && s.allIn(other)
 }
@@ -103,8 +103,8 @@ func (s Set) Copy() Set {
 	return res
 }
 
-// Iter returns a channel to goroutine yielding elements one by one.
-func (s Set) Iter() <-chan string {
+// Channel returns a channel to goroutine yielding elements one by one.
+func (s Set) Channel() <-chan string {
 	ch := make(chan string)
 	go func() {
 		for elem := range s.store {

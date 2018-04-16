@@ -167,20 +167,30 @@ func ExampleSet_SymmetricDifferenceUpdate() {
 }
 
 func ExampleSet_Pop() {
-	set := MakeFromText("beta alpha ")
 	popped := []string{}
+	// initial state
+	set := MakeFromText("beta alpha ")
 	fmt.Println("set ->", set)
-	for e, ok := set.Pop(); ok; e, ok = set.Pop() {
-		popped = append(popped, e)
-		fmt.Println("set.Pop(); set.Len() ->", set.Len())
-	}
+	// first Pop
+	elem, found := set.Pop()
+	fmt.Println("set.Pop(); found ->", found)
+	popped = append(popped, elem)
+	// second Pop
+	elem, found = set.Pop()
+	fmt.Println("set.Pop(); found ->", found)
+	popped = append(popped, elem)
+	// third Pop
+	_, found = set.Pop()
+	fmt.Println("set.Pop(); found ->", found)
+	// final state
 	sort.Strings(popped) // must sort so example passes
 	fmt.Println("set ->", set)
 	fmt.Println("popped ->", popped)
 	// Output:
 	// set -> Set{alpha beta}
-	// set.Pop(); set.Len() -> 1
-	// set.Pop(); set.Len() -> 0
+	// set.Pop(); found -> true
+	// set.Pop(); found -> true
+	// set.Pop(); found -> false
 	// set -> Set{}
 	// popped -> [alpha beta]
 }

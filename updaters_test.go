@@ -170,9 +170,8 @@ func ExampleSet_Pop() {
 	set := MakeFromText("beta alpha ")
 	popped := []string{}
 	fmt.Println("set ->", set)
-	elem, found := set.Pop()
-	for ; found; elem, found = set.Pop() {
-		popped = append(popped, elem)
+	for e, ok := set.Pop(); ok; e, ok = set.Pop() {
+		popped = append(popped, e)
 		fmt.Println("set.Pop(); set.Len() ->", set.Len())
 	}
 	sort.Strings(popped) // must sort so example passes

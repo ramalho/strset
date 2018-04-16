@@ -169,7 +169,7 @@ func ExampleSet_SymmetricDifferenceUpdate() {
 func ExampleSet_Pop() {
 	popped := []string{}
 	// initial state
-	set := MakeFromText("beta alpha ")
+	set := MakeFromText("beta alpha")
 	fmt.Println("set ->", set)
 	// first Pop
 	elem, found := set.Pop()

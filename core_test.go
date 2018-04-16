@@ -160,14 +160,14 @@ func TestMakeFromText(t *testing.T) {
 	}
 }
 
-func TestIter(t *testing.T) {
+func TestChannel(t *testing.T) {
 	testCases := []struct {
 		set  Set
 		want []string
 	}{
 		{Make(), []string{}},
 		{Make("a"), []string{"a"}},
-		{Make("a", "b"), []string{"a", "b"}},
+		{Make("b", "a"), []string{"a", "b"}},
 	}
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("%v yields %v", tc.set, tc.want), func(t *testing.T) {
@@ -180,7 +180,7 @@ func TestIter(t *testing.T) {
 	}
 }
 
-func ExampleSet_Iter() {
+func ExampleSet_Channel() {
 	set := MakeFromText("beta alpha delta gamma")
 	result := []string{}
 	for elem := range set.Channel() { // order is undefined

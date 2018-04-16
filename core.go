@@ -103,7 +103,8 @@ func (s Set) Copy() Set {
 	return res
 }
 
-// Channel returns a channel to goroutine yielding elements one by one.
+// Channel returns a channel to a goroutine
+// yielding elements one by one.
 func (s Set) Channel() <-chan string {
 	ch := make(chan string)
 	go func() {

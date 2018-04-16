@@ -2,6 +2,7 @@ package strset
 
 import (
 	"fmt"
+	"sort"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -163,4 +164,24 @@ func ExampleSet_SymmetricDifferenceUpdate() {
 	fmt.Println(s1)
 	// Output:
 	// Set{alpha gamma pi}
+}
+
+func ExampleSet_Pop() {
+	set := MakeFromText("beta alpha ")
+	popped := []string{}
+	fmt.Println("set ->", set)
+	elem, found := set.Pop()
+	for ; found; elem, found = set.Pop() {
+		popped = append(popped, elem)
+		fmt.Println("set.Pop(); set.Len() ->", set.Len())
+	}
+	sort.Strings(popped) // must sort so example passes
+	fmt.Println("set ->", set)
+	fmt.Println("popped ->", popped)
+	// Output:
+	// set -> Set{alpha beta}
+	// set.Pop(); set.Len() -> 1
+	// set.Pop(); set.Len() -> 0
+	// set -> Set{}
+	// popped -> [alpha beta]
 }

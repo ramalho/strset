@@ -38,7 +38,7 @@ func ExampleMake() {
 	// Output: Set{alpha beta gamma}
 }
 
-func TestHas(t *testing.T) {
+func TestContains(t *testing.T) {
 	testCases := []struct {
 		set    Set
 		needle string
@@ -57,7 +57,7 @@ func TestHas(t *testing.T) {
 	}
 }
 
-func TestHasAll(t *testing.T) {
+func TestContainsAll(t *testing.T) {
 	testCases := []struct {
 		set   Set
 		slice []string
@@ -78,7 +78,7 @@ func TestHasAll(t *testing.T) {
 	}
 }
 
-func ExampleHasAll() {
+func ExampleContainsAll() {
 	s := MakeFromText("alpha beta gamma")
 	query := []string{"gamma", "beta"}
 	fmt.Println(s.ContainsAll(query...))

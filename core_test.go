@@ -78,7 +78,7 @@ func TestContainsAll(t *testing.T) {
 	}
 }
 
-func ExampleContainsAll() {
+func ExampleSet_ContainsAll() {
 	s := MakeFromText("alpha beta gamma")
 	query := []string{"gamma", "beta"}
 	fmt.Println(s.ContainsAll(query...))

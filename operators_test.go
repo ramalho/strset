@@ -7,16 +7,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var (
-	universe  = MakeFromText("0 1 2 3 4 5 6 7 8 9")
-	even      = MakeFromText("0   2   4   6   8  ")
-	odd       = MakeFromText("  1   3   5   7   9")
-	prime     = MakeFromText("    2 3   5   7    ")
-	fibonacci = MakeFromText("0 1 2 3   5     8  ")
-	singleton = MakeFromText("  1                ")
-	empty     = Make()
-)
-
 type TestCase struct {
 	set1 Set
 	set2 Set

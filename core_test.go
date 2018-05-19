@@ -38,7 +38,7 @@ func ExampleMake() {
 	// Output: Set{alpha beta gamma}
 }
 
-func TestHas(t *testing.T) {
+func TestContains(t *testing.T) {
 	testCases := []struct {
 		set    Set
 		needle string
@@ -51,12 +51,13 @@ func TestHas(t *testing.T) {
 	}
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("%q in %v is %v", tc.set, tc.needle, tc.want), func(t *testing.T) {
-			got := tc.set.Has(tc.needle)
+			got := tc.set.Contains(tc.needle)
 			assert.Equal(t, tc.want, got)
 		})
 	}
 }
 
+func TestContainsAll(t *testing.T) {
 var (
 	universe  = MakeFromText("0 1 2 3 4 5 6 7 8 9")
 	even      = MakeFromText("0   2   4   6   8  ")
@@ -67,7 +68,7 @@ var (
 	empty     = Make()
 )
 
-func TestHasAll(t *testing.T) {
+func TestContainsAll(t *testing.T) {
 	testCases := []struct {
 		set   Set
 		slice []string
@@ -81,17 +82,17 @@ func TestHasAll(t *testing.T) {
 		{fibonacci, prime.ToSlice(), false},
 	}
 	for _, tc := range testCases {
-		t.Run(fmt.Sprintf("%v.HasAll(%v...) is %v", tc.set, tc.slice, tc.want), func(t *testing.T) {
-			got := tc.set.HasAll(tc.slice...)
+		t.Run(fmt.Sprintf("%v.ContainsAll(%v...) is %v", tc.set, tc.slice, tc.want), func(t *testing.T) {
+			got := tc.set.ContainsAll(tc.slice...)
 			assert.Equal(t, tc.want, got)
 		})
 	}
 }
 
-func ExampleHasAll() {
+func ExampleSet_ContainsAll() {
 	s := MakeFromText("alpha beta gamma")
 	query := []string{"gamma", "beta"}
-	fmt.Println(s.HasAll(query...))
+	fmt.Println(s.ContainsAll(query...))
 	// Output: true
 }
 
@@ -170,19 +171,19 @@ func TestMakeFromText(t *testing.T) {
 	}
 }
 
-func TestIter(t *testing.T) {
+func TestChannel(t *testing.T) {
 	testCases := []struct {
 		set  Set
 		want []string
 	}{
 		{Make(), []string{}},
 		{Make("a"), []string{"a"}},
-		{Make("a", "b"), []string{"a", "b"}},
+		{Make("b", "a"), []string{"a", "b"}},
 	}
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("%v yields %v", tc.set, tc.want), func(t *testing.T) {
 			got := []string{}
-			for elem := range tc.set.Iter() {
+			for elem := range tc.set.Channel() {
 				got = append(got, elem)
 			}
 			assert.ElementsMatch(t, tc.want, got)
@@ -190,10 +191,10 @@ func TestIter(t *testing.T) {
 	}
 }
 
-func ExampleSet_Iter() {
+func ExampleSet_Channel() {
 	set := MakeFromText("beta alpha delta gamma")
 	result := []string{}
-	for elem := range set.Iter() { // order is undefined
+	for elem := range set.Channel() { // order is undefined
 		result = append(result, elem)
 	}
 	sort.Strings(result) // must sort so example passes

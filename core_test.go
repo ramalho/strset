@@ -14,8 +14,8 @@ func TestMake_empty(t *testing.T) {
 
 func TestMake(t *testing.T) {
 	testCases := []struct {
-		elems []string
-		want  int
+		elems   []string
+		wantLen int
 	}{
 		{[]string{}, 0},
 		{[]string{"a"}, 1},
@@ -23,9 +23,9 @@ func TestMake(t *testing.T) {
 		{[]string{"a", "b", "a"}, 2},
 	}
 	for _, tc := range testCases {
-		t.Run(fmt.Sprintf("%v gets %d", tc.elems, tc.want), func(t *testing.T) {
+		t.Run(fmt.Sprintf("%v gets %d", tc.elems, tc.wantLen), func(t *testing.T) {
 			s := Make(tc.elems...)
-			assert.Equal(t, tc.want, s.Len())
+			assert.Equal(t, tc.wantLen, s.Len())
 		})
 	}
 }
@@ -55,6 +55,16 @@ func TestContains(t *testing.T) {
 		})
 	}
 }
+
+var (
+	universe  = MakeFromText("0 1 2 3 4 5 6 7 8 9")
+	even      = MakeFromText("0   2   4   6   8  ")
+	odd       = MakeFromText("  1   3   5   7   9")
+	prime     = MakeFromText("    2 3   5   7    ")
+	fibonacci = MakeFromText("0 1 2 3   5     8  ")
+	singleton = MakeFromText("  1                ")
+	empty     = Make()
+)
 
 func TestContainsAll(t *testing.T) {
 	testCases := []struct {

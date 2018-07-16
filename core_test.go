@@ -191,7 +191,8 @@ func TestChannel(t *testing.T) {
 
 func ExampleSet_Channel() {
 	set := MakeFromText("beta alpha delta gamma")
-	for elem := range set.Channel() { // order is undefined
+	// iteration order over underlying map is undefined
+	for elem := range set.Channel() {
 		fmt.Println(elem)
 	}
 	// Unordered output:

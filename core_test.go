@@ -2,7 +2,6 @@ package strset
 
 import (
 	"fmt"
-	"sort"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -182,11 +181,12 @@ func TestChannel(t *testing.T) {
 
 func ExampleSet_Channel() {
 	set := MakeFromText("beta alpha delta gamma")
-	result := []string{}
 	for elem := range set.Channel() { // order is undefined
-		result = append(result, elem)
+		fmt.Println(elem)
 	}
-	sort.Strings(result) // must sort so example passes
-	fmt.Println(result)
-	// Output: [alpha beta delta gamma]
+	// Unordered output:
+	// alpha
+	// beta
+	// delta
+	// gamma
 }

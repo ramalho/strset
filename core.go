@@ -7,7 +7,6 @@ package strset
 */
 
 import (
-	"bytes"
 	"sort"
 	"strings"
 )
@@ -72,11 +71,11 @@ func (s Set) ToSlice() []string {
 func (s Set) String() string {
 	elems := s.ToSlice()
 	sort.Strings(elems)
-	var buf bytes.Buffer
-	buf.WriteString("Set{")
-	buf.WriteString(strings.Join(elems, " "))
-	buf.WriteByte('}')
-	return buf.String()
+	var builder strings.Builder
+	builder.WriteString("Set{")
+	builder.WriteString(strings.Join(elems, " "))
+	builder.WriteByte('}')
+	return builder.String()
 }
 
 // allIn reports whether all elements of s exist in other.

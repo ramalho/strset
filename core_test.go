@@ -2,6 +2,8 @@ package strset
 
 import (
 	"fmt"
+	"math/rand"
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -200,4 +202,39 @@ func ExampleSet_Channel() {
 	// beta
 	// delta
 	// gamma
+}
+
+func BenchmarkContainsAll(b *testing.B) {
+	set10 := genRandomSet(10)
+	set100 := genRandomSet(100)
+	set1000 := genRandomSet(1000)
+	testCases := []struct {
+		description string
+		set         Set
+		slice       []string
+	}{
+		{"Len10_ContainsAll(1)", set10, singleton.ToSlice()},
+		{"Len10_ContainsAll(10)", set10, set10.ToSlice()},
+		{"Len100_ContainsAll(10)", set100, set10.ToSlice()},
+		{"Len100_ContainsAll(100)", set100, set100.ToSlice()},
+		{"Len1000_ContainsAll(10)", set1000, set10.ToSlice()},
+		{"Len1000_ContainsAll(100)", set1000, set100.ToSlice()},
+		{"Len1000_ContainsAll(1000000)", set1000, set1000.ToSlice()},
+	}
+	for _, tc := range testCases {
+		b.Run(tc.description, func(b *testing.B) {
+			for n := 0; n < b.N; n++ {
+				tc.set.ContainsAll(tc.slice...)
+			}
+		})
+	}
+}
+
+func genRandomSet(size int) Set {
+	r := rand.New(rand.NewSource(99))
+	set := Make()
+	for len(set.store) < size {
+		set.Add(strconv.Itoa(r.Int()))
+	}
+	return set
 }

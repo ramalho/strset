@@ -169,7 +169,7 @@ func TestMakeFromText(t *testing.T) {
 	}
 }
 
-func TestChannel(t *testing.T) {
+func TestAll(t *testing.T) {
 	testCases := []struct {
 		set  Set
 		want []string
@@ -181,7 +181,7 @@ func TestChannel(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("%v yields %v", tc.set, tc.want), func(t *testing.T) {
 			got := []string{}
-			for elem := range tc.set.Channel() {
+			for elem := range tc.set.All() {
 				got = append(got, elem)
 			}
 			assert.ElementsMatch(t, tc.want, got)
@@ -189,10 +189,10 @@ func TestChannel(t *testing.T) {
 	}
 }
 
-func ExampleSet_Channel() {
+func ExampleSet_All() {
 	set := MakeFromText("beta alpha delta gamma")
 	// iteration order over underlying map is undefined
-	for elem := range set.Channel() {
+	for elem := range set.All() {
 		fmt.Println(elem)
 	}
 	// Unordered output:

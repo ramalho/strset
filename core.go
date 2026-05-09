@@ -8,6 +8,7 @@ package strset
 
 import (
 	"bytes"
+	"iter"
 	"sort"
 	"strings"
 )
@@ -103,15 +104,14 @@ func (s Set) Copy() Set {
 	return res
 }
 
-// Channel returns a channel to a goroutine
-// yielding elements one by one.
-func (s Set) Channel() <-chan string {
-	ch := make(chan string)
-	go func() {
+// All returns an iterator over the elements of s,
+// compatible with for/range in Go 1.23 and later.
+func (s Set) All() iter.Seq[string] {
+	return func(yield func(string) bool) {
 		for elem := range s.store {
-			ch <- elem
+			if !yield(elem) {
+				return
+			}
 		}
-		close(ch)
-	}()
-	return ch
+	}
 }
